@@ -27,14 +27,14 @@ chmod +x proot-x86_64
 cd ..
 
 # clone fivem-private
-if [ ! -d fivem-private ]; then
-	git clone $FIVEM_PRIVATE_URI
-else
-	cd fivem-private
-	git fetch origin
-	git reset --hard origin/master
-	cd ..
-fi
+# if [ ! -d fivem-private ]; then
+# 	git clone $FIVEM_PRIVATE_URI
+# else
+# 	cd fivem-private
+# 	git fetch origin
+# 	git reset --hard origin/master
+# 	cd ..
+# fi
 
 echo "private_repo '../../fivem-private/'" > fivem/code/privates_config.lua
 
