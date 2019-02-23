@@ -54,14 +54,14 @@ build_proot_linux:
     GIT_SUBMODULE_STRATEGY: recursive
     # workaround gitlab-ci-multi-runner#2148
     GIT_SSL_CAPATH: /etc/ssl/certs/
-  script: 
+  script:
     - sh code/tools/ci/build_server_proot.sh
   artifacts:
     paths:
       - fx.tar.xz
   except:
     - tags
-    - master
+    #- master
     - feature/update-to-1365
     - feature/update-to-1604
     - feature/cloning-stuff-releng
@@ -114,7 +114,7 @@ deploy_prod:
     - client
   only:
     - master
-    
+
 typings_server:
   stage: deploy
   dependencies:
@@ -130,7 +130,7 @@ typings_server:
     GIT_SSL_CAPATH: /etc/ssl/certs/
   script:
     - sh ext/typings/server/build.sh
-    
+
 typings_client:
   stage: deploy
   dependencies:
