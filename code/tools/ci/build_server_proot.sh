@@ -36,7 +36,7 @@ cd ..
 # 	cd ..
 # fi
 
-echo "private_repo '../../fivem/'" > fivem/code/privates_config.lua
+echo "private_repo './'" > fivem/code/privates_config.lua
 
 # start building
 cd fivem
