@@ -6,7 +6,7 @@ function private_repo(repoPath)
 	table.insert(private_repos, path.getabsolute(repoPath))
 
 	-- load component config
-	print("Path: " .. repoPath .. '/components/config.lua')
+	print("Path: " .. path.getabsolute(repoPath .. '/components/config.lua'))
 	dofile(repoPath .. '/components/config.lua')
 end
 
