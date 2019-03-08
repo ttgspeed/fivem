@@ -76,6 +76,13 @@ inline ISteamComponent* GetSteam()
 		{
 			return nullptr;
 		}
+
+		// if private client is unavailable, panic out
+		// (usually caused by inaccurate Steam client DLL emulation/wrappers)
+		if (!steamComponent->GetPrivateClient())
+		{
+			return nullptr;
+		}
 	}
 
 	return steamComponent;
@@ -480,14 +487,17 @@ inline uint64_t GetGUID()
 	{
 		IClientEngine* steamClient = steamComponent->GetPrivateClient();
 
-		InterfaceMapper steamUser(steamClient->GetIClientUser(steamComponent->GetHSteamUser(), steamComponent->GetHSteamPipe(), "CLIENTUSER_INTERFACE_VERSION001"));
-
-		if (steamUser.IsValid())
+		if (steamClient)
 		{
-			uint64_t steamID;
-			steamUser.Invoke<void>("GetSteamID", &steamID);
+			InterfaceMapper steamUser(steamClient->GetIClientUser(steamComponent->GetHSteamUser(), steamComponent->GetHSteamPipe(), "CLIENTUSER_INTERFACE_VERSION001"));
 
-			return steamID;
+			if (steamUser.IsValid())
+			{
+				uint64_t steamID;
+				steamUser.Invoke<void>("GetSteamID", &steamID);
+
+				return steamID;
+			}
 		}
 	}
 
@@ -789,7 +799,6 @@ void NetLibrary::ConnectToServer(const net::PeerAddress& address)
 			// TODO: add UI output
 			m_connectionState = CS_IDLE;
 
-			//nui::ExecuteRootScript("citFrames[\"mpMenu\"].contentWindow.postMessage({ type: 'connectFailed', message: 'General handshake failure.' }, '*');");
 			OnConnectionError(va("Failed handshake to server %s:%d%s%s.", m_currentServer.GetAddress(), m_currentServer.GetPort(), connData.length() > 0 ? " - " : "", connData));
 
 			return;
